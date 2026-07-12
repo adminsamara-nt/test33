@@ -66,7 +66,7 @@ body::before{
 
 /* ── NAV ── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;height:64px;
+  position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;
   padding:0 5%;display:flex;align-items:center;justify-content:space-between;
   background:rgba(8,24,42,.45);
   backdrop-filter:blur(28px) saturate(160%);
@@ -74,7 +74,7 @@ nav{
   border-bottom:1px solid rgba(255,255,255,.12);
   box-shadow:0 1px 0 rgba(255,255,255,.06);
 }
-.logo-text{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:#fff;cursor:pointer;user-select:none;transition:opacity .2s}
+.logo-text{font-family:'Playfair Display',serif;font-size:clamp(13px,2vw,21px);font-weight:700;color:#fff;cursor:pointer;user-select:none;transition:opacity .2s;white-space:nowrap;line-height:1.15}
 .logo-text:hover{opacity:.82}
 .logo-text em{font-style:normal;color:var(--gold)}
 .nav-r{display:flex;align-items:center;gap:14px}
@@ -86,11 +86,51 @@ nav{
 }
 .nav-links a:hover{background:rgba(255,255,255,.12);color:#fff}
 
-/* Language switcher */
-.lang-sw{display:flex;gap:2px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:50px;padding:3px}
-.lb{background:none;border:none;padding:5px 11px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;color:rgba(255,255,255,.6);font-family:'Inter',sans-serif;transition:all .2s}
-.lb.active{background:rgba(255,255,255,.18);color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-.lb:hover:not(.active){background:rgba(255,255,255,.1);color:#fff}
+/* Language dropdown */
+.lang-dd{position:relative;z-index:10}
+.lang-dd-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:50px;padding:6px 14px;
+  font-size:12px;font-weight:600;cursor:pointer;
+  color:#fff;font-family:'Inter',sans-serif;
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  transition:background .2s,border-color .2s,box-shadow .2s;
+  white-space:nowrap;
+}
+.lang-dd-btn:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.32);box-shadow:0 4px 16px rgba(0,0,0,.22)}
+.lang-dd.open .lang-dd-btn{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35);box-shadow:0 4px 18px rgba(0,0,0,.28)}
+.lang-dd-arrow{font-size:9px;opacity:.7;transition:transform .22s;display:inline-block}
+.lang-dd.open .lang-dd-arrow{transform:rotate(180deg)}
+.lang-dd-menu{
+  position:absolute;top:calc(100% + 8px);right:0;
+  min-width:148px;
+  background:rgba(12,28,48,.78);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:14px;padding:6px;
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:0 12px 40px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.06) inset;
+  display:none;flex-direction:column;gap:2px;
+  animation:dd-in .18s cubic-bezier(.22,.6,.18,1);
+}
+@keyframes dd-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.lang-dd.open .lang-dd-menu{display:flex}
+.lang-dd-menu button{
+  background:none;border:none;width:100%;text-align:left;
+  padding:9px 14px;border-radius:9px;
+  font-size:13px;font-weight:500;cursor:pointer;
+  color:rgba(255,255,255,.82);font-family:'Inter',sans-serif;
+  transition:background .15s,color .15s;
+  display:flex;align-items:center;gap:9px;
+}
+.lang-dd-menu button:hover{background:rgba(255,255,255,.12);color:#fff}
+.lang-dd-menu button.dd-active{background:rgba(255,255,255,.14);color:#fff;font-weight:700}
+#lang-dd-flag svg,.dd-flag svg{border-radius:2px;display:block;flex-shrink:0}
+#lang-dd-flag{display:inline-flex;align-items:center;vertical-align:middle}
+.dd-flag{display:inline-flex;align-items:center;flex-shrink:0}
 
 /* ── HERO ── */
 .hero-badge{
@@ -104,7 +144,57 @@ nav{
 .hero h1 em{font-style:italic;color:var(--gold)}
 .hero-sub{font-family:'Playfair Display',serif;font-size:clamp(17px,2.2vw,24px);color:rgba(255,255,255,.6);font-style:italic;margin-bottom:20px}
 .hero-desc{color:rgba(255,255,255,.78);font-size:15px;max-width:500px;line-height:1.8;margin-bottom:40px}
-.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+
+/* TG CHANNEL WIDGET */
+.tg-channel-widget{
+  display:inline-flex;flex-direction:column;gap:4px;
+  background:rgba(0,136,204,0.13);
+  border:1px solid rgba(0,136,204,0.38);
+  backdrop-filter:blur(14px) saturate(160%);
+  border-radius:14px;padding:10px 16px;margin-bottom:40px;
+  text-decoration:none;color:inherit;
+  transition:background .22s,border-color .22s,transform .18s;
+  max-width:340px;cursor:pointer;
+}
+.tg-channel-widget:hover{
+  background:rgba(0,136,204,0.22);
+  border-color:rgba(0,136,204,0.75);
+  transform:translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(0,136,204,0.35),
+    0 0 18px rgba(0,136,204,0.45),
+    0 0 42px rgba(0,136,204,0.18),
+    0 8px 28px rgba(0,0,0,0.32);
+}
+.tg-cw-live{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.tg-cw-dot{
+  width:7px;height:7px;border-radius:50%;background:#4ade80;
+  box-shadow:0 0 6px #4ade80;
+  animation:tg-pulse 1.6s ease-in-out infinite;
+}
+@keyframes tg-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.3)}}
+#tg-cw-live-txt{font-size:9px;font-weight:700;letter-spacing:.08em;color:#4ade80;text-transform:uppercase}
+.tg-cw-title{font-size:13px;font-weight:700;color:#fff;line-height:1.3}
+.tg-cw-sub{font-size:10px;color:rgba(255,255,255,0.52);margin-top:1px}
+.tg-cw-btn{
+  display:inline-flex;align-items:center;gap:5px;margin-top:7px;
+  background:rgba(0,136,204,0.7);
+  border-radius:50px;padding:5px 12px;
+  font-size:11px;font-weight:600;color:#fff;
+  width:fit-content;
+  position:relative;overflow:hidden;
+}
+.tg-cw-btn::after{
+  content:'';position:absolute;top:-10%;left:-140%;width:65%;height:120%;
+  background:linear-gradient(105deg,transparent 10%,rgba(255,255,255,.6) 50%,transparent 90%);
+  z-index:1;pointer-events:none;
+  animation:shimmer-loop 8s cubic-bezier(.08,.55,.12,.98) infinite;
+}
+.tg-channel-widget:hover .tg-cw-btn::after{
+  animation:shimmer-loop-h 8s cubic-bezier(.08,.55,.12,.98) infinite;
+}
+.tg-cw-btn>*{position:relative;z-index:2}
 
 /* Glass CTA buttons */
 .btn-gl{
@@ -123,12 +213,24 @@ nav{
   background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 60%);
   pointer-events:none;z-index:0;
 }
+/* Shimmer keyframes — 2 tên giống nhau để hover có thể restart */
+@keyframes shimmer-loop{0%{left:-130%}100%{left:170%}}
+@keyframes shimmer-loop-h{0%{left:-130%}100%{left:170%}}
 .btn-gl::after{
-  content:'';position:absolute;top:0;left:-120%;width:55%;height:100%;
-  background:linear-gradient(105deg,transparent 15%,rgba(255,255,255,.32) 50%,transparent 85%);
-  z-index:1;pointer-events:none;transition:none;
+  content:'';position:absolute;top:-10%;left:-130%;width:60%;height:120%;
+  background:linear-gradient(105deg,transparent 10%,rgba(255,255,255,.55) 50%,transparent 90%);
+  z-index:1;pointer-events:none;
 }
-.btn-gl:hover::after{left:160%;transition:left 10s cubic-bezier(.08,.6,.12,.98)}
+/* Auto-shimmer đồng loạt — không delay */
+.btn-gl-tg::after,
+.btn-gl-wa::after{
+  animation:shimmer-loop 8s cubic-bezier(.08,.55,.12,.98) infinite;
+}
+/* Hover restart bằng cách đổi sang keyframe tên khác */
+.btn-gl-tg:hover::after,
+.btn-gl-wa:hover::after{
+  animation:shimmer-loop-h 8s cubic-bezier(.08,.55,.12,.98) infinite;
+}
 .btn-gl:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5);transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,0,0,.35)}
 .btn-gl>*{position:relative;z-index:2}
 .btn-gl-tg{background:rgba(0,136,204,.25);border-color:rgba(0,136,204,.5)}
@@ -153,7 +255,7 @@ nav{
 }
 .nc-banner strong{font-size:15px;font-weight:800;color:var(--gold);letter-spacing:.5px}
 .nc-sep{color:rgba(255,255,255,.2)}
-.nc-sub{font-size:13px;color:rgba(255,255,255,.5)}
+.nc-sub{font-size:15px;font-weight:800;color:var(--gold);letter-spacing:.5px}
 
 /* ── SECTION COMMONS ── */
 .sec{padding:80px 5%;position:relative;z-index:1}
@@ -163,16 +265,34 @@ nav{
 .s-sub{font-size:14px;color:var(--text-muted);font-style:italic;margin-bottom:40px}
 
 /* ── TELEGRAM SECTION ── */
-.tg-sec{padding:80px 5%;position:relative;z-index:1}
+.tg-sec{
+  padding:100px 5%;position:relative;z-index:1;
+  background-image:var(--tg-bg,linear-gradient(160deg,#0e4a6e 0%,#0a7fa8 40%,#08c6c0 70%,#05a88c 100%));
+  background-attachment:fixed;
+  background-size:cover;
+  background-position:center 30%;
+  isolation:isolate;
+}
+.tg-sec::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:linear-gradient(180deg,
+    rgba(5,15,30,.72) 0%,
+    rgba(5,15,30,.55) 40%,
+    rgba(5,15,30,.65) 100%);
+  pointer-events:none;
+}
+.tg-sec-inner{position:relative;z-index:1}
 .tg-sec-inner{max-width:1100px;margin:0 auto}
 .tg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:28px}
 .tg-card{
   padding:26px 22px;display:flex;flex-direction:column;gap:10px;
   border-radius:20px;cursor:default;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
 }
-.tg-card-icon{font-size:28px}
-.tg-card-title{font-size:14px;font-weight:700;color:#fff}
-.tg-card-desc{font-size:13px;color:var(--text-muted);line-height:1.65;flex:1}
+.tg-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.15)}
+.tg-card-icon{font-size:28px;margin-bottom:4px}
+.tg-card-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.tg-card-desc{font-size:13px;color:rgba(255,255,255,.78);line-height:1.7;flex:1}
 
 /* TG CTA */
 .tg-cta-wrap{
@@ -231,16 +351,41 @@ nav{
 .tg-card-icon{margin-bottom:12px}
 
 /* ── WHY SECTION ── */
-.why-sec{padding:80px 5%;position:relative;z-index:1}
-.why-sec-inner{max-width:1100px;margin:0 auto}
+.why-sec{
+  padding:100px 5%;position:relative;z-index:1;
+  background:linear-gradient(145deg,
+    rgba(90,42,0,.82) 0%,
+    rgba(120,58,8,.70) 25%,
+    rgba(100,50,5,.75) 55%,
+    rgba(70,30,0,.85) 100%);
+  isolation:isolate;
+}
+.why-sec::before{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 30%,rgba(255,160,40,.18) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 70%,rgba(201,120,20,.14) 0%,transparent 70%);
+}
+.why-sec-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
 .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
-.why-card{padding:26px 22px;cursor:default}
+.why-card{
+  padding:26px 22px;cursor:default;
+  background:rgba(255,140,30,.08) !important;
+  border-color:rgba(255,160,50,.22) !important;
+  transition:transform .22s,box-shadow .22s,background .22s,border-color .22s;
+}
+.why-card:hover{
+  background:rgba(255,150,40,.16) !important;
+  border-color:rgba(255,180,70,.42) !important;
+  transform:translateY(-3px);
+  box-shadow:0 16px 40px rgba(0,0,0,.35),0 0 0 1px rgba(255,160,50,.2);
+}
 .why-icon{font-size:28px;margin-bottom:14px}
-.why-t{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:8px;line-height:1.4}
-.why-d{font-size:13px;color:var(--text-muted);line-height:1.65}
+.why-t{font-size:15px;font-weight:700;color:#FFBE6A;margin-bottom:8px;line-height:1.4;letter-spacing:-.01em}
+.why-d{font-size:13px;color:rgba(255,220,160,.75);line-height:1.7}
 
 /* ── LOCATION ── */
-.loc-sec{padding:60px 5%;position:relative;z-index:650}
+.loc-sec{padding:60px 5%;position:relative;z-index:1;background:none}
 .loc-inner{max-width:700px;margin:0 auto;display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;
   padding:32px 36px;border-radius:24px;overflow:visible}
 .loc-icon-wrap{flex-shrink:0;width:52px;height:52px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;backdrop-filter:blur(10px)}
@@ -268,7 +413,7 @@ nav{
   background:rgba(12,30,50,.88);
   backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);
   border:1px solid rgba(255,255,255,.18);border-radius:16px;
-  box-shadow:0 16px 48px rgba(0,0,0,.4);min-width:250px;z-index:999;
+  box-shadow:0 16px 48px rgba(0,0,0,.4);min-width:250px;z-index:200;
 }
 .map-picker.open{display:block;animation:fadeUp .18s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -286,6 +431,24 @@ nav{
 /* Fix dropdown bị che bởi overflow:hidden của .glass */
 .loc-inner.glass{overflow:visible !important}
 .loc-sec{overflow:visible}
+/* ── LOCATION + CONTACT PARALLAX BEACH ── */
+.beach-wrap{
+  position:relative;z-index:1;
+  background-image:var(--beach-bg,none);
+  background-color:#0a3a5c;
+  background-attachment:fixed;
+  background-size:cover;
+  background-position:center 40%;
+}
+.beach-wrap::before{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(4,14,28,.65) 0%,
+    rgba(4,14,28,.45) 40%,
+    rgba(4,14,28,.60) 100%);
+}
+.beach-wrap>*{position:relative;z-index:1}
+
 /* ── CONTACT ── */
 .contact-sec{padding:80px 5%;text-align:center;position:relative;z-index:1}
 .contact-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
@@ -384,15 +547,15 @@ footer p{font-size:12px;color:var(--text-dim)}
 <nav>
   <div class="logo-text" id="logo" onclick="scrollToTop()">Samara <em>Nha Trang</em></div>
   <div class="nav-r">
-    <div class="nav-links">
-      <a id="nav-tg" onclick="scrollSec('tg-section')">Квартиры</a>
-      <a id="nav-why" onclick="scrollSec('why')">О нас</a>
-      <a id="nav-contact" onclick="scrollSec('contact')">Контакт</a>
-    </div>
-    <div class="lang-sw">
-      <button class="lb" id="lb-en" onclick="setLang('en')">EN</button>
-      <button class="lb active" id="lb-ru" onclick="setLang('ru')">RU</button>
-      <button class="lb" id="lb-vi" onclick="setLang('vi')">VI</button>
+    <div class="lang-dd" id="lang-dd">
+      <button class="lang-dd-btn" id="lang-dd-btn" onclick="toggleLangDd(event)">
+        <span id="lang-dd-flag"><svg width="18" height="13" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg"><rect width="9" height="2" fill="#fff"/><rect y="2" width="9" height="2" fill="#0039A6"/><rect y="4" width="9" height="2" fill="#D52B1E"/></svg></span> <span id="lang-dd-label">Русский</span> <span class="lang-dd-arrow">▼</span>
+      </button>
+      <div class="lang-dd-menu" id="lang-dd-menu">
+        <button id="dd-en" onclick="selectLang('en',event)"><span class="dd-flag"><svg width="18" height="13" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="5"/><path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="12"/><path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="7"/></svg></span> English</button>
+        <button id="dd-ru" onclick="selectLang('ru',event)" class="dd-active"><span class="dd-flag"><svg width="18" height="13" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg"><rect width="9" height="2" fill="#fff"/><rect y="2" width="9" height="2" fill="#0039A6"/><rect y="4" width="9" height="2" fill="#D52B1E"/></svg></span> Русский</button>
+        <button id="dd-vi" onclick="selectLang('vi',event)"><span class="dd-flag"><svg width="18" height="13" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="20" fill="#DA251D"/><polygon points="15,2 17.4,9 24.5,9 18.8,13.5 21.1,20.5 15,16 8.9,20.5 11.2,13.5 5.5,9 12.6,9" fill="#FFFF00"/></svg></span> Tiếng Việt</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -413,6 +576,18 @@ footer p{font-size:12px;color:var(--text-dim)}
       <span>+84 862 517 058</span>
     </a>
   </div>
+
+  <!-- TG CHANNEL WIDGET -->
+  <a class="tg-channel-widget" href="https://t.me/nyachang_Apartment" target="_blank" rel="noopener">
+    <span class="tg-cw-live"><span class="tg-cw-dot"></span><span id="tg-cw-live-txt">ĐANG CẬP NHẬT</span></span>
+    <span class="tg-cw-title" id="tg-cw-title">Xem tất cả căn hộ →</span>
+    <span class="tg-cw-sub" id="tg-cw-sub">t.me/nyachang_Apartment · Miễn phí · Không cần đăng ký</span>
+    <span class="tg-cw-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><use href="#ic-tg"/></svg>
+      <span id="tg-cw-btn-txt">Mở kênh</span>
+      <span>→</span>
+    </span>
+  </a>
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="stat-num" id="s1num">Đa dạng</div>
@@ -486,9 +661,9 @@ footer p{font-size:12px;color:var(--text-dim)}
 <!-- WHY SECTION -->
 <section class="why-sec" id="why">
   <div class="why-sec-inner">
-    <p class="s-eye" id="why-eye">Почему Самара</p>
-    <h2 class="s-title" id="why-title">Напрямую. Честно. Надёжно.</h2>
-    <p class="s-sub" id="why-sub"></p>
+    <p class="s-eye" id="why-eye" style="color:rgba(255,190,100,.7)">Почему Самара</p>
+    <h2 class="s-title" id="why-title" style="color:#fff">Напрямую. Честно. Надёжно.</h2>
+    <p class="s-sub" id="why-sub" style="color:rgba(255,220,160,.65)"></p>
     <div class="why-grid">
       <div class="why-card glass">
         <div class="why-icon"><div class="gi gi-red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFB0B0" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div></div>
@@ -517,6 +692,9 @@ footer p{font-size:12px;color:var(--text-dim)}
     </div>
   </div>
 </section>
+
+<!-- BEACH PARALLAX WRAP -->
+<div class="beach-wrap" id="beach-wrap">
 
 <!-- LOCATION -->
 <section class="loc-sec" id="location">
@@ -570,6 +748,8 @@ footer p{font-size:12px;color:var(--text-dim)}
   </div>
   <div class="contact-info">Telegram: @Samara_Rental · WhatsApp: +84 862 517 058</div>
 </section>
+
+</div><!-- /beach-wrap -->
 
 <footer>
   <div class="f-logo">Samara <em>Nha Trang</em></div>
@@ -665,9 +845,29 @@ function el(id){return document.getElementById(id)}
 function html(id,v){var e=el(id);if(e)e.innerHTML=v}
 function txt(id,v){var e=el(id);if(e)e.textContent=v}
 
+var langNames={en:"English",ru:"Русский",vi:"Tiếng Việt"};
+var langFlags={
+  en:'<svg width="18" height="13" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="5"/><path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="12"/><path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="7"/></svg>',
+  ru:'<svg width="18" height="13" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg"><rect width="9" height="2" fill="#fff"/><rect y="2" width="9" height="2" fill="#0039A6"/><rect y="4" width="9" height="2" fill="#D52B1E"/></svg>',
+  vi:'<svg width="18" height="13" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="20" fill="#DA251D"/><polygon points="15,2 17.4,9 24.5,9 18.8,13.5 21.1,20.5 15,16 8.9,20.5 11.2,13.5 5.5,9 12.6,9" fill="#FFFF00"/></svg>'
+};
+
+function toggleLangDd(e){
+  e.stopPropagation();
+  el("lang-dd").classList.toggle("open");
+}
+function selectLang(l,e){
+  e.stopPropagation();
+  el("lang-dd").classList.remove("open");
+  setLang(l);
+}
+/* lang-dd outside-click handled in shared listener below */
+
 function setLang(l){
   lang=l; localStorage.setItem("s_lang",l);
-  ["en","ru","vi"].forEach(function(x){var b=el("lb-"+x);if(b)b.classList.toggle("active",x===l)});
+  var lbl=el("lang-dd-label");if(lbl)lbl.textContent=langNames[l]||l;
+  var flg=el("lang-dd-flag");if(flg)flg.innerHTML=langFlags[l]||"";
+  ["en","ru","vi"].forEach(function(x){var b=el("dd-"+x);if(b)b.classList.toggle("dd-active",x===l)});
   var t=T[l];
   html("hero-h1",t.heroH1);
   txt("hero-sub",t.heroSub); txt("hero-desc",t.heroDesc); txt("nc-sub",t.ncSub);
@@ -678,6 +878,8 @@ function setLang(l){
   txt("tc3t",t.tc3t); txt("tc3d",t.tc3d); txt("tc4t",t.tc4t); txt("tc4d",t.tc4d);
   txt("tg-live",t.tgLive); txt("tg-cta-title",t.tgCtaTitle);
   txt("tg-cta-sub",t.tgCtaSub); txt("tg-cta-btn",t.tgCtaBtn);
+  txt("tg-cw-live-txt",t.tgLive); txt("tg-cw-title",t.tgCtaTitle);
+  txt("tg-cw-sub",t.tgCtaSub); txt("tg-cw-btn-txt",t.tgCtaBtn);
   txt("why-eye",t.whyEye); txt("why-title",t.whyTitle);
   ["1","2","3","4","5","6"].forEach(function(n){txt("w"+n+"t",t["w"+n+"t"]);txt("w"+n+"d",t["w"+n+"d"])});
   txt("c-eye",t.cEye); txt("c-title",t.cTitle); txt("c-sub",t.cSub);
@@ -703,10 +905,11 @@ function toggleMapPicker(e){
   el("map-picker").classList.toggle("open");
 }
 document.addEventListener("click",function(e){
+  var dd=el("lang-dd");
+  if(dd&&!dd.contains(e.target))dd.classList.remove("open");
   var p=el("map-picker");
   if(!p||!p.classList.contains("open")) return;
   var btn=el("btn-map-open");
-  // Không đóng nếu click vào picker hoặc nút mở
   if(p.contains(e.target)||btn.contains(e.target)) return;
   p.classList.remove("open");
 });
